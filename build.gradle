@@ -54,6 +54,7 @@ dependencies {
     compile group: 'ch.qos.logback', name:'logback-classic', version: '1.2.3'
     compile group: 'ch.qos.logback', name:'logback-core', version: '1.2.3'
     compile "org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinx_html_version"
+    compile "org.apache.httpcomponents:httpasyncclient"
     testCompile 'junit:junit:4.12'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5'
 
