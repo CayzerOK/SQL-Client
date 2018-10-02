@@ -12,8 +12,7 @@ suspend fun Login(email:String, password:String) {
         method = HttpMethod.Post
     }
     if (call.response.status.value != 200) {
-        PrintException(call.response.status)
-        throw LoginException("${call.response.status.value}")
+        throw LoginException(call.response.status.value,call.response.status.description)
     } else {
         GetProfile()
     }
@@ -25,8 +24,7 @@ suspend fun Logout() {
         method = HttpMethod.Get
     }
     if (call.response.status.value != 200) {
-        PrintException(call.response.status)
-        throw LogoutException("${call.response.status.value}")
+        throw LogoutException(call.response.status.value,call.response.status.description)
     } else profile = User()
 }
 
@@ -36,8 +34,7 @@ suspend fun GetProfile() {
         contentType(ContentType.Application.Json)
     }
     if (call.response.status.value != 200) {
-        PrintException(call.response.status)
-        throw ProfileException("${call.response.status.value}")
+        throw ProfileException(call.response.status.value,call.response.status.description)
     }
     profile = gson.fromJson(call.response.readText(), object : TypeToken<User>() {}.type)
 }
@@ -47,7 +44,6 @@ suspend fun Register(email: String, username:String, password: String) {
         contentType(ContentType.Application.Json)
     }
     if (call.response.status.value != 200) {
-        PrintException(call.response.status)
-        throw RegisterException("${call.response.status.value}")
+        throw RegisterException(call.response.status.value,call.response.status.description)
     }
 }

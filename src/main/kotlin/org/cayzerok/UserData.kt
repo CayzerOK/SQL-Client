@@ -13,25 +13,18 @@ data class User(val userID: Int? = null,
                 val userName:String? = null,
                 val avatarURL:String? = null,
                 val role:String? = null,
-                val ban:Boolean? = null,
                 val mute:Boolean? = null)
 
 suspend fun GetUserList(page:Int=1, limit:Int=5): List<User> {
-    try {
-
-        val call = client.call("$serverURL/users?page=$page&limit=$limit") {
-            method = HttpMethod.Get
-            contentType(ContentType.Application.Json)
-        }
-        if (call.response.status.value != 200) {
-            PrintException(call.response.status)
-            throw UserListException("${call.response.status.value}")}
-        val UserList: List<User> = gson.fromJson(call.response.readText(), object : TypeToken<List<User>>() {}.type)
-        return UserList
+    val call = client.call("$serverURL/users?page=$page&limit=$limit") {
+        method = HttpMethod.Get
+        contentType(ContentType.Application.Json)
     }
-    catch (e:UserListException) {
-        return emptyList()
+    if (call.response.status.value != 200) {
+        throw UserListException(call.response.status.value, call.response.status.description)
     }
+    val UserList: List<User> = gson.fromJson(call.response.readText(), object : TypeToken<List<User>>() {}.type)
+    return UserList
 }
 
 suspend fun GetUser(email:String): User? {
@@ -39,32 +32,65 @@ suspend fun GetUser(email:String): User? {
         method = HttpMethod.Get
         contentType(ContentType.Application.Json)
     }
-
     if (call.response.status.value != 200) {
-        PrintException(call.response.status)
-        throw UserDataException("${call.response.status.value}")
+        throw UserDataException(call.response.status.value,call.response.status.description)
     }
     val UserData: User = gson.fromJson(call.response.readText(), object : TypeToken<User>() {}.type)
     return UserData
 }
+suspend fun Ban(userID:Int) {
+    val call = client.call("$serverURL/users?userID=$userID&dataType=role&newValue=BANNED") {
+        method = HttpMethod.Post
+        contentType(ContentType.Application.Json)
+    }
+    if (call.response.status.value != 200) {
+        throw BanException(call.response.status.value,call.response.status.description)
+    }
+}
+suspend fun Mute(userID:Int) {
+    val call = client.call("$serverURL/users?userID=$userID&dataType=mute&newValue=true") {
+        method = HttpMethod.Post
+        contentType(ContentType.Application.Json)
+    }
+    if (call.response.status.value != 200) {
+        throw MuteException(call.response.status.value,call.response.status.description)
+    }
+}
+suspend fun Unmute(userID:Int) {
+    val call = client.call("$serverURL/users?userID=$userID&dataType=mute&newValue=false") {
+        method = HttpMethod.Post
+        contentType(ContentType.Application.Json)
+    }
+    if (call.response.status.value != 200) {
+        throw MuteException(call.response.status.value,call.response.status.description)
+    }
+}
+suspend fun DeleteMe() {
+    val call = client.call("$serverURL/profile") {
+        method = HttpMethod.Delete
+        contentType(ContentType.Application.Json)
+    }
+    if (call.response.status.value != 200) {
+        throw DeleteException(call.response.status.value,call.response.status.description)
+    }
+}
+
 
 suspend fun UpdateUser(userID:Int,dataType: List<String>, data: List<String>) {
     val call = client.call("$serverURL/users?userID=$userID&dataType=${MakeDataString(dataType, data)}") {
         method = HttpMethod.Post
     }
     if (call.response.status.value != 200) {
-        PrintException(call.response.status)
-        throw UserDataException("${call.response.status.value}")
+        throw UpdateException(call.response.status.value,call.response.status.description)
     }
 }
 
 suspend fun UpdateProfile(dataType: List<String>, data: List<String>) {
-    val call = client.call("$serverURL/profile?dataType=${MakeDataString(dataType, data)}") {
+    val call = client.call("$serverURL/profile?${MakeDataString(dataType, data)}") {
         method = HttpMethod.Post
     }
     if (call.response.status.value != 200) {
-        PrintException(call.response.status)
-        throw UserDataException("${call.response.status.value}")
+        throw UpdateException(call.response.status.value,call.response.status.description)
     } else {
         GetProfile()
     }
@@ -72,7 +98,7 @@ suspend fun UpdateProfile(dataType: List<String>, data: List<String>) {
 
 fun MakeDataString(dataType: List<String>, data: List<String>): String {
     if (data.size != dataType.size){
-        throw UpdateException("Bad data list or dataType list.\n DataType list:" + dataType + "\n Data list:" + data)
+        throw DataStringException("Bad data list or dataType list.\n DataType list:" + dataType + "\n Data list:" + data)
     }
     var dataString =""
     dataType.forEach {            //Добавление типов данных
