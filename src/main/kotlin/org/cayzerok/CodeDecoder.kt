@@ -1,6 +1,5 @@
 package org.cayzerok
 
-import io.ktor.http.HttpStatusCode
 
 
 class UserListException(code: Int, override var message:String): Exception(message)
