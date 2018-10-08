@@ -181,7 +181,7 @@ fun RegLogTest() {
 fun UserTest() {
     println("Login:")
     try {
-        Login("user@email.ru","12345")
+        Login("user@email.ru","123456")
         println("OK")
     } catch (exc:LoginException) {println("WRONG - "+exc.code+" "+ exc.message)}
     println("------------------------------------------------------------------------------")
@@ -343,7 +343,7 @@ fun UserTest() {
 fun ModerTest() {
     println("Login:")
     try {
-        Login("moder@email.ru","12345")
+        Login("moder@email.ru","123456")
         println("OK")
     } catch (exc:LoginException) {println("WRONG - "+exc.code+" "+ exc.message)}
     println("------------------------------------------------------------------------------")
@@ -528,7 +528,7 @@ fun ModerTest() {
 fun AdminTest() {
     println("Login:")
     try {
-        Login("admin@email.ru","12345")
+        Login("admin@email.ru","123456")
         println("OK")
     } catch (exc:LoginException) {println("WRONG - "+exc.code+" "+ exc.message)}
     println("------------------------------------------------------------------------------")

@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.51'
+    ext.kotlin_version = '1.2.41'
     ext.ktor_version = '0.9.3'
     ext.logback_version = '1.2.3'
     ext.kotlinx_html_version = '0.6.11'
@@ -13,7 +13,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.2.51'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.41'
     id 'java'
     id 'com.gradle.build-scan' version '1.15.1'
     id "org.jetbrains.dokka" version "0.9.16"

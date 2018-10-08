@@ -16,9 +16,11 @@ data class UserData(val userID: Int?=null,
                     val mute: Boolean?=null)
 
 fun main(args : Array<String>){
-   // GuestTest()
-    //UserTest()
-    //RegLogTest()
-    //ModerTest()
+   GuestTest()
+    UserTest()
+    RegLogTest()
+    ModerTest()
     AdminTest()
+
+    //Register("deleted@email.ru","ExampleDeleted", "123456")
 }
