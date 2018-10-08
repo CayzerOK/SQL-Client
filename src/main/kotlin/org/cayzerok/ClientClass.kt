@@ -1,6 +1,7 @@
 package org.cayzerok
 
 import com.google.gson.GsonBuilder
+import javax.jws.WebParam
 
 val url = "http://localhost:8080/"
 var profile = UserData()
@@ -15,5 +16,9 @@ data class UserData(val userID: Int?=null,
                     val mute: Boolean?=null)
 
 fun main(args : Array<String>){
-    GetUserListCall(1,6).forEach { println(it) }
+   // GuestTest()
+    //UserTest()
+    //RegLogTest()
+    //ModerTest()
+    AdminTest()
 }
